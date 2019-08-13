@@ -34,6 +34,7 @@ public class EmailReqProducer implements Runnable
 		{
 			String data = bufferedReader.readLine();
 			SendEmailReq sendEmailReq = gson.fromJson( data, SendEmailReq.class );
+			System.out.println( "[EmailReqProducer] Send Email Request : " + sendEmailReq.toString() );
 			SendEmailAck sendEmailAck = emailDispatchQueue.enqueue( sendEmailReq );
 			printWriter.println( gson.toJson( sendEmailAck ) );
 			socket.close();

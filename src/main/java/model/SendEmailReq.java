@@ -59,4 +59,16 @@ public class SendEmailReq implements Serializable
 	{
 		this.body = body;
 	}
+
+	@Override
+	public String toString()
+	{
+		return "SendEmailReq{" +
+				"requestId='" + requestId + '\'' +
+				", senderName='" + senderName + '\'' +
+				", receipentEmail='" + receipentEmail + '\'' +
+				", subject='" + subject + '\'' +
+				", body='" + body + '\'' +
+				'}';
+	}
 }

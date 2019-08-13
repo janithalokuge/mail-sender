@@ -1,5 +1,7 @@
 package client;
 
+import org.apache.commons.lang3.RandomStringUtils;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -19,7 +21,8 @@ public class MailClient
 
 		for ( int i = 0; i < requests; i++ )
 		{
-			executorService.execute( new ClientMailSender( ClientMailSender.getEmailReq( String.valueOf( i ) ) ) );
+			String requestId = RandomStringUtils.random( 10, true, true );
+			executorService.execute( new ClientMailSender( ClientMailSender.getEmailReq( requestId ) ) );
 		}
 
 		executorService.shutdown();

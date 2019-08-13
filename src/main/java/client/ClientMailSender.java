@@ -14,26 +14,36 @@ import java.net.UnknownHostException;
 
 public class ClientMailSender implements Runnable
 {
+	private static final String SENDER_ADDRESS = "janitha@test.com";
+	private static final String RECIPIENT_ADDRESS = "janithalokuge92@gmail.com";
 	private InetAddress host;
 	private int port;
 	private SendEmailReq sendEmailReq;
 	private Gson gson = new Gson();
-
-	private static final String SENDER_ADDRESS = "janitha@test.com";
-	private static final String RECIPIENT_ADDRESS = "janithalokuge92@gmail.com";
 
 	public ClientMailSender( SendEmailReq sendEmailReq )
 	{
 		try
 		{
 			host = InetAddress.getLocalHost();
-			port = 2500;
+			port = 6666;
 			this.sendEmailReq = sendEmailReq;
 		}
 		catch ( UnknownHostException e )
 		{
 			e.printStackTrace();
 		}
+	}
+
+	public static SendEmailReq getEmailReq( String requestId )
+	{
+		SendEmailReq emailReqMsg = new SendEmailReq();
+		emailReqMsg.setRequestId( requestId );
+		emailReqMsg.setBody( "Body" );
+		emailReqMsg.setReceipentEmail( RECIPIENT_ADDRESS );
+		emailReqMsg.setSubject( requestId );
+		emailReqMsg.setSenderName( SENDER_ADDRESS );
+		return emailReqMsg;
 	}
 
 	@Override
@@ -49,26 +59,15 @@ public class ClientMailSender implements Runnable
 		{
 			String outputString = gson.toJson( sendEmailReq, SendEmailReq.class );
 			printWriter.println( outputString );
-
+			System.out.println( "Send Email Request :" + sendEmailReq.toString() );
 			String inputString = bufferedReader.readLine();
 			SendEmailAck resMsg = gson.fromJson( inputString, SendEmailAck.class );
-			System.out.println( resMsg );
+			System.out.println( "Send Email Ack :" + resMsg.toString() );
 		}
 		catch ( IOException e )
 		{
 			e.printStackTrace();
 		}
-	}
-
-	public static SendEmailReq getEmailReq( String requestId )
-	{
-		SendEmailReq emailReqMsg = new SendEmailReq();
-		emailReqMsg.setRequestId( requestId );
-		emailReqMsg.setBody( "Body" );
-		emailReqMsg.setReceipentEmail( RECIPIENT_ADDRESS );
-		emailReqMsg.setSubject( requestId );
-		emailReqMsg.setSenderName( SENDER_ADDRESS );
-		return emailReqMsg;
 	}
 
 }

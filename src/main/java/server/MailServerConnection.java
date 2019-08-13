@@ -52,6 +52,7 @@ public class MailServerConnection
 
 			message.setContent( multipart );
 			Transport.send( message );
+			System.out.println( "[MailServerConnection] Send Email Successful : " + sendEmailReq.toString() );
 		}
 		catch ( MessagingException e )
 		{

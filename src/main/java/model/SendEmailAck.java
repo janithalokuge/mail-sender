@@ -7,11 +7,6 @@ public class SendEmailAck implements Serializable
 	private String requestId;
 	private Status status;
 
-	public enum Status
-	{
-		OK, ERROR;
-	}
-
 	public SendEmailAck( String requestId, Status status )
 	{
 		this.requestId = requestId;
@@ -36,6 +31,20 @@ public class SendEmailAck implements Serializable
 	public void setStatus( Status status )
 	{
 		this.status = status;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "SendEmailAck{" +
+				"requestId='" + requestId + '\'' +
+				", status=" + status +
+				'}';
+	}
+
+	public enum Status
+	{
+		OK, ERROR;
 	}
 }
 

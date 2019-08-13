@@ -5,20 +5,20 @@ import java.net.ServerSocket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class SocketServer
 {
+	public static Logger logger = Logger.getLogger( "SocketServerLog" );
 	private int port;
 	private boolean running;
 	private int noOfEmailDispatures;
 	private int noOfSendEmailReqProducers;
 	private EmailDispatchQueue emailDispatchQueue;
 	private MailServerConnection mailServerConnection;
-	ExecutorService emailReqProducerExecutorService;
-	ExecutorService emailDispatcherExecutorService;
-
-	public static Logger logger = Logger.getLogger( "SocketServerLog" );
+	private ExecutorService emailReqProducerExecutorService;
+	private ExecutorService emailDispatcherExecutorService;
 
 	public SocketServer( int port, boolean listening, int noOfMailSenders, int noOfRequestHandlers, EmailDispatchQueue emailDispatchQueue, MailServerConnection mailServerConnection )
 	{
@@ -33,7 +33,7 @@ public class SocketServer
 	public SocketServer()
 	{
 		// There parameters can be load from configs as well
-		this.port = 2500;
+		this.port = 6666;
 		this.running = true;
 		this.noOfEmailDispatures = 2;
 		this.noOfSendEmailReqProducers = 2;
@@ -54,7 +54,7 @@ public class SocketServer
 
 		try (ServerSocket serverSocket = new ServerSocket( port ))
 		{
-			logger.info( "The Email Server is running" );
+			logger.log( Level.INFO, "The Email Server is running" );
 			while ( running )
 			{
 				emailReqProducerExecutorService.execute( new EmailReqProducer( serverSocket.accept(), emailDispatchQueue ) );
@@ -63,6 +63,7 @@ public class SocketServer
 		catch ( IOException e )
 		{
 			e.printStackTrace();
+			logger.log( Level.SEVERE, "Error Starting Server : " + e.toString() );
 		}
 
 	}
